@@ -1,0 +1,24 @@
+import { apiClient } from './client';
+import type { AuthResponse } from '@/types/auth';
+
+export async function register(input: {
+  email: string;
+  username: string;
+  password: string;
+  displayName?: string;
+}): Promise<AuthResponse> {
+  const { data } = await apiClient.post<AuthResponse>('/auth/register', input);
+  return data;
+}
+
+export async function login(identifier: string, password: string): Promise<AuthResponse> {
+  const { data } = await apiClient.post<AuthResponse>('/auth/login', {
+    identifier,
+    password,
+  });
+  return data;
+}
+
+export async function logout(refreshToken: string): Promise<void> {
+  await apiClient.post('/auth/logout', { refreshToken });
+}

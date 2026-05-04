@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+.next/
+.turbo/
+*.tsbuildinfo
+frontend/vite.config.js
+frontend/vite.config.d.ts
+
+# Env files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Prisma
+*.db
+*.db-journal
+backend/prisma/migrations/dev.db*
+
+# Cache
+.cache/
+.parcel-cache/
+.vite/
+
+# Docker
+docker-data/
+
+# OS
+Thumbs.db
+
+# Internal docs (yerel referans; repoya dahil değil)
+.docs/

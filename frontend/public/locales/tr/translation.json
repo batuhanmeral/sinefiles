@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "discover": "Keşfet",
+    "lists": "Listeler",
+    "feed": "Akış",
+    "searchPlaceholder": "Film, dizi veya kullanıcı ara…",
+    "profileMenu": "Profil menüsü",
+    "viewProfile": "Profilim",
+    "settings": "Ayarlar"
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "logout": "Çıkış Yap",
+    "register": "Kayıt Ol",
+    "loginTitle": "Tekrar hoş geldin",
+    "loginSubtitle": "Sinema günlüğüne devam et.",
+    "registerTitle": "Hesap oluştur",
+    "registerSubtitle": "İzlediklerini kaydetmeye, listeler oluşturmaya başla.",
+    "identifier": "E-posta veya kullanıcı adı",
+    "email": "E-posta",
+    "username": "Kullanıcı adı",
+    "displayName": "Görünen ad",
+    "password": "Şifre",
+    "optional": "opsiyonel",
+    "createAccount": "Hesabımı oluştur",
+    "loggingIn": "Giriş yapılıyor…",
+    "registering": "Hesap oluşturuluyor…",
+    "noAccount": "Hesabın yok mu?",
+    "hasAccount": "Zaten hesabın var mı?",
+    "errors": {
+      "identifierRequired": "E-posta veya kullanıcı adı gerekli",
+      "passwordRequired": "Şifre gerekli",
+      "passwordShort": "Şifre en az 8 karakter olmalı",
+      "passwordLong": "Şifre çok uzun",
+      "emailInvalid": "Geçerli bir e-posta gir",
+      "usernameShort": "Kullanıcı adı en az 3 karakter",
+      "usernameLong": "Kullanıcı adı en fazla 24 karakter",
+      "usernamePattern": "Sadece küçük harf, rakam ve _ kullan",
+      "unexpected": "Beklenmeyen bir hata oluştu"
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Bu hafta öne çıkanlar",
+      "review": "İncele",
+      "watchlist": "Listeye Ekle",
+      "reviews": "TMDB oyu"
+    },
+    "sections": {
+      "popular": "Bu Hafta Popüler",
+      "recentReviews": "Arkadaşlarından Son İncelemeler",
+      "upcoming": "Yakında Vizyonda",
+      "seeAll": "Tümünü gör"
+    }
+  },
+  "discover": {
+    "title": "Keşfet",
+    "subtitle": "Yıl, tür ve puana göre süz; sırala ve incele.",
+    "searchingFor": "“{{q}}” için sonuçlar",
+    "searchPlaceholder": "Film veya dizi ara…",
+    "loadMore": "Daha fazla yükle",
+    "empty": "Bu filtreye uyan içerik bulunamadı.",
+    "error": "Sonuçlar yüklenemedi. Birazdan tekrar dene.",
+    "filters": {
+      "title": "Filtreler",
+      "subtitle": "Sonuçları daralt",
+      "type": "Tür",
+      "movies": "Film",
+      "shows": "Dizi",
+      "sortBy": "Sırala",
+      "sortPopularity": "Popülerliğe göre",
+      "sortRating": "Puana göre",
+      "sortRecent": "En yeni",
+      "year": "Yıl",
+      "genre": "Kategori",
+      "minRating": "Min. TMDB puanı",
+      "any": "Hepsi",
+      "reset": "Filtreleri sıfırla"
+    }
+  },
+  "content": {
+    "movie": "Film",
+    "tv": "Dizi",
+    "review": "İncele",
+    "addWatchlist": "Listeye Ekle",
+    "trailer": "Fragman",
+    "close": "Kapat",
+    "overview": "Konu",
+    "cast": "Oyuncular",
+    "videos": "Videolar",
+    "tmdbVotes": "TMDB oyu",
+    "communityRating": "Topluluk:",
+    "reviews": "inceleme",
+    "notFound": "İçerik bulunamadı."
+  },
+  "profile": {
+    "follow": "Takip et",
+    "followComingSoon": "Takip özelliği Faz 5'te aktifleşecek",
+    "reviews": "İnceleme",
+    "followers": "Takipçi",
+    "following": "Takip",
+    "empty": "Bu kullanıcı henüz inceleme yazmamış.",
+    "notFound": "Kullanıcı bulunamadı."
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "subtitle": "Hesap ve uygulama tercihlerini yönet.",
+    "account": "Hesap",
+    "language": "Dil",
+    "languageHelp": "Arayüz dili değişimi anında uygulanır ve hesabına kaydedilir.",
+    "saving": "kaydediliyor…",
+    "saveError": "Tercih kaydedilemedi"
+  },
+  "footer": {
+    "tagline": "Sinemanın sosyal günlüğü"
+  },
+  "notFound": {
+    "message": "Aradığın sayfayı bulamadık.",
+    "backHome": "Ana sayfaya dön"
+  }
+}

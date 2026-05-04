@@ -1,0 +1,344 @@
+// SineFiles - Prisma Schema
+// Veritabanı: PostgreSQL
+// ORM: Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =====================================================
+// ENUMS
+// =====================================================
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ContentType {
+  MOVIE
+  TV
+}
+
+enum ListType {
+  WATCHED
+  WATCHLIST
+  FAVORITES
+  CUSTOM
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum Language {
+  TR
+  EN
+}
+
+enum NotificationType {
+  NEW_FOLLOWER
+  REVIEW_LIKE
+  REVIEW_COMMENT
+  LIST_LIKE
+  MENTION
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+  DISMISSED
+}
+
+// =====================================================
+// USER
+// =====================================================
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  username     String   @unique
+  passwordHash String
+  displayName  String?
+  bio          String?  @db.Text
+  avatarUrl    String?
+  language     Language @default(TR)
+  role         Role     @default(USER)
+  isSuspended  Boolean  @default(false)
+  emailVerified Boolean @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // İlişkiler
+  reviews          Review[]
+  reviewLikes      ReviewLike[]
+  reviewComments   ReviewComment[]
+  lists            List[]
+  listLikes        ListLike[]
+  followers        Follow[]        @relation("UserFollowers")  // beni takip edenler
+  following        Follow[]        @relation("UserFollowing")  // benim takip ettiklerim
+  blocksInitiated  Block[]         @relation("Blocker")
+  blocksReceived   Block[]         @relation("Blocked")
+  notifications    Notification[]  @relation("Recipient")
+  notificationsSent Notification[] @relation("Actor")
+  reportsFiled     Report[]        @relation("Reporter")
+  activities       Activity[]
+  refreshTokens    RefreshToken[]
+
+  @@index([username])
+  @@index([email])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// =====================================================
+// CONTENT (TMDB Cache)
+// =====================================================
+// Not: TMDB bir veri kaynağıdır; metaverinin tam kopyasını saklamayız.
+// Yalnızca uygulamanın hızlı arama, ilişki kurma ve agregasyon için
+// ihtiyaç duyduğu minimum alanları cache'leriz.
+// (tmdbId + type) bileşik anahtarı tekilliği sağlar.
+
+model Content {
+  id           String      @id @default(uuid())
+  tmdbId       Int
+  type         ContentType
+  title        String
+  originalTitle String?
+  posterPath   String?
+  backdropPath String?
+  releaseDate  DateTime?
+  overview     String?     @db.Text
+  genres       Int[]       // TMDB genre id listesi
+  tmdbRating   Float?
+  popularity   Float?
+  cachedAt     DateTime    @default(now())
+
+  // İlişkiler
+  reviews   Review[]
+  listItems ListItem[]
+
+  @@unique([tmdbId, type])
+  @@index([type])
+  @@index([popularity])
+  @@index([releaseDate])
+}
+
+// =====================================================
+// REVIEW & PUANLAMA
+// =====================================================
+
+model Review {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentId  String
+  content    Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  rating     Float    // 0.5 - 5.0 arası, 0.5 adımlı (uygulama katmanında doğrulanır)
+  body       String?  @db.Text
+  containsSpoiler Boolean @default(false)
+  isFlagged  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  likes    ReviewLike[]
+  comments ReviewComment[]
+  reports  Report[]
+
+  @@unique([userId, contentId]) // Bir kullanıcı, bir içerik için tek inceleme
+  @@index([contentId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model ReviewLike {
+  id       String @id @default(uuid())
+  reviewId String
+  userId   String
+  review   Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([reviewId, userId])
+  @@index([reviewId])
+}
+
+model ReviewComment {
+  id        String   @id @default(uuid())
+  reviewId  String
+  userId    String
+  body      String   @db.Text
+  isFlagged Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([reviewId])
+}
+
+// =====================================================
+// LISTS
+// =====================================================
+
+model List {
+  id          String     @id @default(uuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        ListType
+  title       String
+  description String?    @db.Text
+  visibility  Visibility @default(PRIVATE)
+  coverImage  String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  items ListItem[]
+  likes ListLike[]
+
+  // Standart sistem listeleri (WATCHED/WATCHLIST/FAVORITES) kullanıcı başına
+  // tek olmalı. CUSTOM listeler için bu kural geçerli değildir; uygulama
+  // katmanında kontrol edilir.
+  @@index([userId, type])
+  @@index([visibility])
+}
+
+model ListItem {
+  id        String   @id @default(uuid())
+  listId    String
+  contentId String
+  position  Int      @default(0)
+  note      String?  @db.Text
+  addedAt   DateTime @default(now())
+
+  list    List    @relation(fields: [listId], references: [id], onDelete: Cascade)
+  content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@unique([listId, contentId])
+  @@index([listId, position])
+}
+
+model ListLike {
+  id       String   @id @default(uuid())
+  listId   String
+  userId   String
+  createdAt DateTime @default(now())
+
+  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([listId, userId])
+}
+
+// =====================================================
+// SOSYAL: TAKİP / ENGELLEME / BİLDİRİM / AKTİVİTE
+// =====================================================
+
+model Follow {
+  id          String   @id @default(uuid())
+  followerId  String   // takip eden
+  followingId String   // takip edilen
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model Block {
+  id        String   @id @default(uuid())
+  blockerId String
+  blockedId String
+  createdAt DateTime @default(now())
+
+  blocker User @relation("Blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked User @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@unique([blockerId, blockedId])
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  recipientId String
+  actorId     String?
+  type        NotificationType
+  entityType  String?          // "review" | "list" | "user" gibi
+  entityId    String?
+  isRead      Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  recipient User  @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  actor     User? @relation("Actor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([recipientId, isRead])
+  @@index([createdAt])
+}
+
+model Activity {
+  id         String   @id @default(uuid())
+  userId     String
+  verb       String   // "REVIEWED" | "LIKED" | "ADDED_TO_LIST" | "FOLLOWED"
+  entityType String   // "review" | "list" | "content" | "user"
+  entityId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
+}
+
+// =====================================================
+// MODERASYON
+// =====================================================
+
+model Report {
+  id          String       @id @default(uuid())
+  reporterId  String
+  reviewId    String?
+  reason      String
+  description String?      @db.Text
+  status      ReportStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  resolvedAt  DateTime?
+
+  reporter User    @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  review   Review? @relation(fields: [reviewId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  adminId   String
+  action    String   // "USER_SUSPENDED" | "REVIEW_DELETED" gibi
+  targetType String
+  targetId  String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([adminId, createdAt])
+  @@index([targetType, targetId])
+}

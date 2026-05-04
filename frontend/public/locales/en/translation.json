@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "home": "Home",
+    "discover": "Discover",
+    "lists": "Lists",
+    "feed": "Feed",
+    "searchPlaceholder": "Search films, series, people…",
+    "profileMenu": "Profile menu",
+    "viewProfile": "My profile",
+    "settings": "Settings"
+  },
+  "auth": {
+    "login": "Sign in",
+    "logout": "Sign out",
+    "register": "Sign up",
+    "loginTitle": "Welcome back",
+    "loginSubtitle": "Continue your cinema journal.",
+    "registerTitle": "Create your account",
+    "registerSubtitle": "Track films, build lists, share with friends.",
+    "identifier": "Email or username",
+    "email": "Email",
+    "username": "Username",
+    "displayName": "Display name",
+    "password": "Password",
+    "optional": "optional",
+    "createAccount": "Create account",
+    "loggingIn": "Signing in…",
+    "registering": "Creating account…",
+    "noAccount": "No account?",
+    "hasAccount": "Already have an account?",
+    "errors": {
+      "identifierRequired": "Email or username required",
+      "passwordRequired": "Password required",
+      "passwordShort": "Password must be at least 8 characters",
+      "passwordLong": "Password is too long",
+      "emailInvalid": "Enter a valid email",
+      "usernameShort": "Username must be at least 3 characters",
+      "usernameLong": "Username can be at most 24 characters",
+      "usernamePattern": "Only lowercase, digits and _",
+      "unexpected": "Something went wrong"
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Spotlight this week",
+      "review": "Review",
+      "watchlist": "Watchlist",
+      "reviews": "TMDB votes"
+    },
+    "sections": {
+      "popular": "Popular This Week",
+      "recentReviews": "Recent Reviews from Friends",
+      "upcoming": "Coming Soon",
+      "seeAll": "See all"
+    }
+  },
+  "discover": {
+    "title": "Discover",
+    "subtitle": "Filter by year, genre and rating; sort and review.",
+    "searchingFor": "Results for “{{q}}”",
+    "searchPlaceholder": "Search movies or shows…",
+    "loadMore": "Load more",
+    "empty": "No content matches these filters.",
+    "error": "Couldn't load results. Try again shortly.",
+    "filters": {
+      "title": "Filters",
+      "subtitle": "Narrow results",
+      "type": "Type",
+      "movies": "Movies",
+      "shows": "Shows",
+      "sortBy": "Sort by",
+      "sortPopularity": "Popularity",
+      "sortRating": "Rating",
+      "sortRecent": "Newest",
+      "year": "Year",
+      "genre": "Genre",
+      "minRating": "Min TMDB rating",
+      "any": "Any",
+      "reset": "Reset filters"
+    }
+  },
+  "content": {
+    "movie": "Movie",
+    "tv": "TV Show",
+    "review": "Review",
+    "addWatchlist": "Add to Watchlist",
+    "trailer": "Trailer",
+    "close": "Close",
+    "overview": "Overview",
+    "cast": "Cast",
+    "videos": "Videos",
+    "tmdbVotes": "TMDB votes",
+    "communityRating": "Community:",
+    "reviews": "reviews",
+    "notFound": "Content not found."
+  },
+  "profile": {
+    "follow": "Follow",
+    "followComingSoon": "Follow comes online in Phase 5",
+    "reviews": "Reviews",
+    "followers": "Followers",
+    "following": "Following",
+    "empty": "No reviews yet from this user.",
+    "notFound": "User not found."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and app preferences.",
+    "account": "Account",
+    "language": "Language",
+    "languageHelp": "Interface language updates instantly and is saved to your account.",
+    "saving": "saving…",
+    "saveError": "Couldn't save preference"
+  },
+  "footer": {
+    "tagline": "The social diary of cinema"
+  },
+  "notFound": {
+    "message": "We couldn't find the page you were looking for.",
+    "backHome": "Back to home"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "sinefiles",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Social film/series review platform powered by TMDB.",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:backend": "pnpm --filter ./backend dev",
+    "dev:frontend": "pnpm --filter ./frontend dev",
+    "build": "pnpm -r build"
+  }
+}
