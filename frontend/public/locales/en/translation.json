@@ -52,12 +52,14 @@
     },
     "sections": {
       "popular": "Popular This Week",
+      "popularReviews": "Popular Reviews This Week",
       "popularLists": "Popular Lists",
       "upcoming": "Coming Soon",
       "seeAll": "See all"
     },
     "loading": "Loading…",
     "empty": {
+      "reviews": "No standout reviews this week yet.",
       "lists": "No popular lists yet."
     }
   },
