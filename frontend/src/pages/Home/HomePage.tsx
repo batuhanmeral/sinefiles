@@ -6,9 +6,11 @@ import { ContentCard } from '@/components/content/ContentCard';
 import { PosterSkeleton } from '@/components/content/PosterSkeleton';
 import { Slider } from '@/components/layout/Slider';
 import { contentApi, langFromI18n } from '@/api/content.api';
+import { reviewsApi } from '@/api/reviews.api';
 import { listsApi } from '@/api/lists.api';
 import { backdrop, poster } from '@/lib/tmdb';
 import { RatingStars } from '@/components/content/RatingStars';
+import { PopularReviewCard } from '@/features/reviews/PopularReviewCard';
 import { PopularListCard } from '@/features/lists/PopularListCard';
 import type { ContentItem } from '@/types/content';
 
@@ -32,6 +34,12 @@ export default function HomePage() {
     queryKey: ['upcoming', language],
     queryFn: () => contentApi.upcoming(language, 1),
     staleTime: 60 * 60 * 1000,
+  });
+
+  const popularReviews = useQuery({
+    queryKey: ['reviews', 'popular', 'week'],
+    queryFn: () => reviewsApi.popular(7, 12),
+    staleTime: 10 * 60 * 1000,
   });
 
   const popularLists = useQuery({
@@ -79,6 +87,26 @@ export default function HomePage() {
               <div key={`${m.type}-${m.id}`} className="w-40 shrink-0 snap-start sm:w-44">
                 <ContentCard item={m} />
               </div>
+            ))}
+          </Slider>
+        )}
+      </section>
+
+      <section>
+        <div className="section-title">
+          <h2>{t('home.sections.popularReviews')}</h2>
+          <Link to="/discover">{t('home.sections.seeAll')} →</Link>
+        </div>
+        {popularReviews.isLoading ? (
+          <div className="card text-sm text-ink-muted">{t('home.loading')}</div>
+        ) : (popularReviews.data ?? []).length === 0 ? (
+          <div className="card text-center text-sm text-ink-muted">
+            {t('home.empty.reviews')}
+          </div>
+        ) : (
+          <Slider ariaLabel={t('home.sections.popularReviews')}>
+            {popularReviews.data!.map((r) => (
+              <PopularReviewCard key={r.id} review={r} />
             ))}
           </Slider>
         )}
