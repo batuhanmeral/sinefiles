@@ -52,12 +52,14 @@
     },
     "sections": {
       "popular": "Bu Hafta Popüler",
+      "popularReviews": "Bu Hafta Popüler İncelemeler",
       "popularLists": "Popüler Listeler",
       "upcoming": "Yakında Vizyonda",
       "seeAll": "Tümünü gör"
     },
     "loading": "Yükleniyor…",
     "empty": {
+      "reviews": "Bu hafta henüz öne çıkan inceleme yok.",
       "lists": "Henüz popüler liste yok."
     }
   },
