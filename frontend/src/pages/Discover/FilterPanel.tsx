@@ -9,6 +9,7 @@ export interface DiscoverFilterValues {
   sortBy:
     | 'popularity.desc'
     | 'vote_average.desc'
+    | 'vote_count.desc'
     | 'release_date.desc'
     | 'primary_release_date.desc';
 }
@@ -60,6 +61,7 @@ export function FilterPanel({ values, onChange, genres }: Props) {
         >
           <option value="popularity.desc">{t('discover.filters.sortPopularity')}</option>
           <option value="vote_average.desc">{t('discover.filters.sortRating')}</option>
+          <option value="vote_count.desc">{t('discover.filters.sortMostRated')}</option>
           <option
             value={values.type === 'movie' ? 'primary_release_date.desc' : 'release_date.desc'}
           >

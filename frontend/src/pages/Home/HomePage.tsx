@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ContentCard } from '@/components/content/ContentCard';
 import { PosterSkeleton } from '@/components/content/PosterSkeleton';
-import { ReviewCard } from '@/components/review/ReviewCard';
+import { Slider } from '@/components/layout/Slider';
 import { contentApi, langFromI18n } from '@/api/content.api';
+import { listsApi } from '@/api/lists.api';
 import { backdrop, poster } from '@/lib/tmdb';
 import { RatingStars } from '@/components/content/RatingStars';
-import { recentReviews } from './mockData';
+import { PopularListCard } from '@/features/lists/PopularListCard';
 import type { ContentItem } from '@/types/content';
 
 export default function HomePage() {
@@ -33,17 +34,23 @@ export default function HomePage() {
     staleTime: 60 * 60 * 1000,
   });
 
+  const popularLists = useQuery({
+    queryKey: ['lists', 'popular'],
+    queryFn: () => listsApi.popular(10),
+    staleTime: 10 * 60 * 1000,
+  });
+
   const [featuredIndex, setFeaturedIndex] = useState(0);
 
   const featuredItems = trending.data?.results.slice(0, 5) ?? [];
   const featured = featuredItems[featuredIndex];
-  const popularItems = popularMovies.data?.results.slice(0, 6) ?? [];
+  const popularItems = popularMovies.data?.results.slice(0, 12) ?? [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const upcomingItems = (upcoming.data?.results ?? [])
     .filter((m) => m.releaseDate && new Date(m.releaseDate) > today)
-    .slice(0, 4);
+    .slice(0, 12);
 
   return (
     <div className="space-y-12">
@@ -62,24 +69,36 @@ export default function HomePage() {
           <h2>{t('home.sections.popular')}</h2>
           <Link to="/discover">{t('home.sections.seeAll')} →</Link>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-          {popularMovies.isLoading && <PosterSkeleton count={6} />}
-          {popularItems.map((m) => (
-            <ContentCard key={`${m.type}-${m.id}`} item={m} />
-          ))}
-        </div>
+        {popularMovies.isLoading ? (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            <PosterSkeleton count={6} />
+          </div>
+        ) : (
+          <Slider ariaLabel={t('home.sections.popular')}>
+            {popularItems.map((m) => (
+              <div key={`${m.type}-${m.id}`} className="w-40 shrink-0 snap-start sm:w-44">
+                <ContentCard item={m} />
+              </div>
+            ))}
+          </Slider>
+        )}
       </section>
 
       <section>
         <div className="section-title">
-          <h2>{t('home.sections.recentReviews')}</h2>
-          <Link to="/feed">{t('home.sections.seeAll')} →</Link>
+          <h2>{t('home.sections.popularLists')}</h2>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {recentReviews.map((r) => (
-            <ReviewCard key={r.id} review={r} />
-          ))}
-        </div>
+        {popularLists.isLoading ? (
+          <div className="card text-sm text-ink-muted">{t('home.loading')}</div>
+        ) : (popularLists.data ?? []).length === 0 ? (
+          <div className="card text-center text-sm text-ink-muted">{t('home.empty.lists')}</div>
+        ) : (
+          <Slider ariaLabel={t('home.sections.popularLists')}>
+            {popularLists.data!.map((l) => (
+              <PopularListCard key={l.id} list={l} />
+            ))}
+          </Slider>
+        )}
       </section>
 
       <section>
@@ -87,12 +106,19 @@ export default function HomePage() {
           <h2>{t('home.sections.upcoming')}</h2>
           <Link to="/discover">{t('home.sections.seeAll')} →</Link>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {upcoming.isLoading && <PosterSkeleton count={4} />}
-          {upcomingItems.map((m) => (
-            <ContentCard key={`${m.type}-${m.id}`} item={m} />
-          ))}
-        </div>
+        {upcoming.isLoading ? (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+            <PosterSkeleton count={4} />
+          </div>
+        ) : (
+          <Slider ariaLabel={t('home.sections.upcoming')}>
+            {upcomingItems.map((m) => (
+              <div key={`${m.type}-${m.id}`} className="w-40 shrink-0 snap-start sm:w-44">
+                <ContentCard item={m} />
+              </div>
+            ))}
+          </Slider>
+        )}
       </section>
     </div>
   );
@@ -114,39 +140,22 @@ function FeaturedHero({
   const fiveStar = item.voteAverage ? +(item.voteAverage / 2).toFixed(1) : 0;
 
   return (
-    <section
-      className="relative overflow-hidden rounded-2xl ring-1 ring-white/5"
-      aria-labelledby="hero-title"
-    >
-      {backdropUrl && (
+    <section className="relative" aria-labelledby="hero-title">
+      <div className="relative overflow-hidden rounded-2xl ring-1 ring-white/5">
+        {backdropUrl && (
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${backdropUrl})` }}
+            aria-hidden="true"
+          />
+        )}
         <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${backdropUrl})` }}
+          className="absolute inset-0 bg-gradient-to-r from-surface via-surface/85 to-surface/30"
           aria-hidden="true"
         />
-      )}
-      <div
-        className="absolute inset-0 bg-gradient-to-r from-surface via-surface/85 to-surface/30"
-        aria-hidden="true"
-      />
-      <div className="absolute inset-0 backdrop-blur-2xl" aria-hidden="true" />
+        <div className="absolute inset-0 backdrop-blur-2xl" aria-hidden="true" />
 
-      <button
-        onClick={onPrev}
-        className="absolute left-2 top-1/2 z-10 -translate-y-1/2 grid h-10 w-10 place-items-center rounded-full bg-surface/50 text-white backdrop-blur transition-colors hover:bg-surface/80 sm:left-4"
-        aria-label="Önceki"
-      >
-        ←
-      </button>
-      <button
-        onClick={onNext}
-        className="absolute right-2 top-1/2 z-10 -translate-y-1/2 grid h-10 w-10 place-items-center rounded-full bg-surface/50 text-white backdrop-blur transition-colors hover:bg-surface/80 sm:right-4"
-        aria-label="Sonraki"
-      >
-        →
-      </button>
-
-      <div className="relative grid gap-8 px-14 py-6 sm:px-20 sm:py-10 md:grid-cols-[220px,1fr] md:items-center">
+        <div className="relative grid gap-8 px-14 py-6 sm:px-20 sm:py-10 md:grid-cols-[220px,1fr] md:items-center">
         {posterUrl ? (
           <img
             src={posterUrl}
@@ -194,7 +203,23 @@ function FeaturedHero({
             </Link>
           </div>
         </div>
+        </div>
       </div>
+
+      <button
+        onClick={onPrev}
+        className="absolute left-0 top-1/2 z-20 grid h-12 w-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-surface text-ink shadow-card ring-1 ring-white/10 transition-colors hover:bg-surface-raised"
+        aria-label="Önceki"
+      >
+        ←
+      </button>
+      <button
+        onClick={onNext}
+        className="absolute right-0 top-1/2 z-20 grid h-12 w-12 translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-surface text-ink shadow-card ring-1 ring-white/10 transition-colors hover:bg-surface-raised"
+        aria-label="Sonraki"
+      >
+        →
+      </button>
     </section>
   );
 }

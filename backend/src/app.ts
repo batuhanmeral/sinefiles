@@ -7,6 +7,7 @@ import { healthRouter } from './api/health/health.routes.js';
 import { authRouter } from './api/auth/auth.routes.js';
 import { contentRouter } from './api/content/content.routes.js';
 import { usersRouter } from './api/users/users.routes.js';
+import { listsRouter } from './api/lists/lists.routes.js';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware.js';
 import { generalRateLimiter } from './middleware/rateLimit.middleware.js';
 
@@ -43,6 +44,7 @@ export function createApp() {
   app.use('/api/auth', authRouter);
   app.use('/api/content', contentRouter);
   app.use('/api/users', usersRouter);
+  app.use('/api/lists', listsRouter);
 
   // Bulunamayan rotalar ve hatalar için middleware'ler (en sonda olmalı)
   app.use(notFoundHandler);
