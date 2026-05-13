@@ -41,7 +41,12 @@ export default function HomePage() {
     queryFn: () => contentApi.upcoming(language, 1),
     staleTime: 60 * 60 * 1000,
   });
-
+  // Son 7 günün popüler incelemeleri
+  const popularReviews = useQuery({
+    queryKey: ['reviews', 'popular', 'week'],
+    queryFn: () => reviewsApi.popular(7, 12),
+    staleTime: 10 * 60 * 1000,
+  });
 
   const popularLists = useQuery({
     queryKey: ['lists', 'popular'],
@@ -181,35 +186,35 @@ function FeaturedHero({ item, onNext, onPrev }: { item: ContentItem; onNext: () 
         <div className="absolute inset-0 backdrop-blur-md" aria-hidden="true" />
 
         <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 sm:py-14 md:grid-cols-[220px,1fr] md:items-center">
-        {/* Poster */}
-        {posterUrl ? (
-          <img src={posterUrl} alt={item.title} className="aspect-[2/3] w-full max-w-[220px] rounded-xl shadow-card ring-1 ring-white/10" />
-        ) : (
-          <div className="aspect-[2/3] w-full max-w-[220px] rounded-xl bg-surface-muted" />
-        )}
-
-        <div className="text-balance">
-          <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">{t('home.hero.eyebrow')}</p>
-          <h1 id="hero-title" className="font-display text-4xl font-extrabold leading-tight text-ink sm:text-5xl">{item.title}</h1>
-          {item.overview && (
-            <p className="mt-2 max-w-prose text-sm text-ink-muted line-clamp-3 sm:text-base">{item.overview}</p>
+          {/* Poster */}
+          {posterUrl ? (
+            <img src={posterUrl} alt={item.title} className="aspect-[2/3] w-full max-w-[220px] rounded-xl shadow-card ring-1 ring-white/10" />
+          ) : (
+            <div className="aspect-[2/3] w-full max-w-[220px] rounded-xl bg-surface-muted" />
           )}
 
-          {/* Yıl, puan ve oy sayısı */}
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-muted">
-            {year && (
-              <span className="rounded-full bg-surface-raised px-2.5 py-0.5 text-xs font-semibold text-ink">{year}</span>
+          <div className="text-balance">
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">{t('home.hero.eyebrow')}</p>
+            <h1 id="hero-title" className="font-display text-4xl font-extrabold leading-tight text-ink sm:text-5xl">{item.title}</h1>
+            {item.overview && (
+              <p className="mt-2 max-w-prose text-sm text-ink-muted line-clamp-3 sm:text-base">{item.overview}</p>
             )}
-            <RatingStars value={fiveStar} showValue />
-            <span>{item.voteCount.toLocaleString()} {t('home.hero.reviews')}</span>
-          </div>
 
-          {/* Aksiyon butonları */}
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to={`/${item.type}/${item.id}`} className="btn-primary">{t('home.hero.review')}</Link>
-            <Link to={`/${item.type}/${item.id}`} className="btn-outline">{t('home.hero.watchlist')}</Link>
+            {/* Yıl, puan ve oy sayısı */}
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-muted">
+              {year && (
+                <span className="rounded-full bg-surface-raised px-2.5 py-0.5 text-xs font-semibold text-ink">{year}</span>
+              )}
+              <RatingStars value={fiveStar} showValue />
+              <span>{item.voteCount.toLocaleString()} {t('home.hero.reviews')}</span>
+            </div>
+
+            {/* Aksiyon butonları */}
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link to={`/${item.type}/${item.id}`} className="btn-primary">{t('home.hero.review')}</Link>
+              <Link to={`/${item.type}/${item.id}`} className="btn-outline">{t('home.hero.watchlist')}</Link>
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
