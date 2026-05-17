@@ -11,9 +11,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// =====================================================
 // ENUMS
-// =====================================================
 
 enum Role {
   USER
@@ -57,9 +55,7 @@ enum ReportStatus {
   DISMISSED
 }
 
-// =====================================================
 // USER
-// =====================================================
 
 model User {
   id           String   @id @default(uuid())
@@ -69,6 +65,7 @@ model User {
   displayName  String?
   bio          String?  @db.Text
   avatarUrl    String?
+  location     String?
   language     Language @default(TR)
   role         Role     @default(USER)
   isSuspended  Boolean  @default(false)
@@ -108,9 +105,7 @@ model RefreshToken {
   @@index([userId])
 }
 
-// =====================================================
 // CONTENT (TMDB Cache)
-// =====================================================
 // Not: TMDB bir veri kaynağıdır; metaverinin tam kopyasını saklamayız.
 // Yalnızca uygulamanın hızlı arama, ilişki kurma ve agregasyon için
 // ihtiyaç duyduğu minimum alanları cache'leriz.
@@ -141,9 +136,7 @@ model Content {
   @@index([releaseDate])
 }
 
-// =====================================================
 // REVIEW & PUANLAMA
-// =====================================================
 
 model Review {
   id         String   @id @default(uuid())
@@ -195,9 +188,7 @@ model ReviewComment {
   @@index([reviewId])
 }
 
-// =====================================================
 // LISTS
-// =====================================================
 
 model List {
   id          String     @id @default(uuid())
@@ -248,9 +239,7 @@ model ListLike {
   @@unique([listId, userId])
 }
 
-// =====================================================
 // SOSYAL: TAKİP / ENGELLEME / BİLDİRİM / AKTİVİTE
-// =====================================================
 
 model Follow {
   id          String   @id @default(uuid())
@@ -310,9 +299,7 @@ model Activity {
   @@index([createdAt])
 }
 
-// =====================================================
 // MODERASYON
-// =====================================================
 
 model Report {
   id          String       @id @default(uuid())

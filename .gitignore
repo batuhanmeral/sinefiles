@@ -11,6 +11,10 @@ build/
 frontend/vite.config.js
 frontend/vite.config.d.ts
 
+# tsc emit yan ürünleri (Vite transpile eder; .js çıktıları repoya girmez)
+frontend/src/**/*.js
+frontend/src/**/*.d.ts
+
 # Env files
 .env
 .env.local

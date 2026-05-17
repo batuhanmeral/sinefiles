@@ -20,6 +20,18 @@ export const requireAuth: RequestHandler = (req, _res, next) => {
   }
 };
 
+// Token varsa req.auth'u doldurur, yoksa sessizce devam eder. Hata fırlatmaz.
+export const optionalAuth: RequestHandler = (req, _res, next) => {
+  const header = req.headers.authorization;
+  if (!header?.startsWith('Bearer ')) return next();
+  try {
+    req.auth = verifyAccessToken(header.slice(7));
+  } catch {
+    // Geçersiz token sessizce yok sayılır
+  }
+  next();
+};
+
 // Belirli rollere sahip kullanıcıların erişimine izin veren middleware oluşturucu
 export const requireRole =
   (...roles: Array<AccessTokenPayload['role']>): RequestHandler =>
