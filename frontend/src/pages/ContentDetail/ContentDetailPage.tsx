@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { contentApi, langFromI18n } from '@/api/content.api';
 import { backdrop, poster, profile, youtubeEmbed, youtubeThumb } from '@/lib/tmdb';
 import { RatingStars } from '@/components/content/RatingStars';
+import { ReviewsSection } from '@/features/reviews/ReviewsSection';
 import type { TmdbType } from '@/types/content';
 
 interface ContentDetailPageProps {
@@ -206,15 +207,7 @@ export default function ContentDetailPage({ type }: ContentDetailPageProps) {
         </section>
       )}
 
-      {/* İncelemeler Placeholder */}
-      <section>
-        <div className="section-title">
-          <h2>İncelemeler</h2>
-        </div>
-        <div className="card text-center text-sm text-ink-muted">
-          Bu alan daha sonra tamamlanacaktır.
-        </div>
-      </section>
+      <ReviewsSection contentId={data.contentId} />
 
       {trailer && trailerOpen && (
         <div
