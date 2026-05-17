@@ -49,6 +49,10 @@ backend/prisma/migrations/dev.db*
 # Docker
 docker-data/
 
+# Uploaded user content (avatars vb. — runtime'da oluşur, repoya girmez)
+backend/uploads/
+!backend/uploads/.gitkeep
+
 # OS
 Thumbs.db
 
