@@ -1,10 +1,13 @@
 {
   "nav": {
-    "home": "Ana Sayfa",
-    "discover": "Keşfet",
-    "lists": "Listeler",
-    "feed": "Akış",
-    "searchPlaceholder": "Film, dizi veya kullanıcı ara…",
+    "home": "ANA SAYFA",
+    "discover": "KESFET",
+    "lists": "LISTELER",
+    "feed": "AKIS",
+    "searchPlaceholder": "Film veya dizi ara…",
+    "searching": "Aranıyor…",
+    "noResults": "Sonuç bulunamadı",
+    "seeAllResults": "“{{q}}” için tüm sonuçlar",
     "profileMenu": "Profil menüsü",
     "viewProfile": "Profilim",
     "settings": "Ayarlar"
@@ -49,9 +52,13 @@
     },
     "sections": {
       "popular": "Bu Hafta Popüler",
-      "recentReviews": "Arkadaşlarından Son İncelemeler",
+      "popularLists": "Popüler Listeler",
       "upcoming": "Yakında Vizyonda",
       "seeAll": "Tümünü gör"
+    },
+    "loading": "Yükleniyor…",
+    "empty": {
+      "lists": "Henüz popüler liste yok."
     }
   },
   "discover": {
@@ -71,6 +78,7 @@
       "sortBy": "Sırala",
       "sortPopularity": "Popülerliğe göre",
       "sortRating": "Puana göre",
+      "sortMostRated": "En çok değerlendirilen",
       "sortRecent": "En yeni",
       "year": "Yıl",
       "genre": "Kategori",
@@ -97,6 +105,8 @@
   "profile": {
     "follow": "Takip et",
     "followComingSoon": "Takip özelliği Faz 5'te aktifleşecek",
+    "editProfile": "Profilimi düzenle",
+    "watched": "İzlenenler",
     "reviews": "İnceleme",
     "followers": "Takipçi",
     "following": "Takip",
@@ -106,11 +116,31 @@
   "settings": {
     "title": "Ayarlar",
     "subtitle": "Hesap ve uygulama tercihlerini yönet.",
-    "account": "Hesap",
+    "profile": "Profil bilgileri",
+    "profileHelp": "Bu bilgiler herkese açık profilinde görüntülenir.",
+    "saveProfile": "Bilgileri Güncelle",
+    "profileSaved": "Profil güncellendi",
+    "bio": "Hakkında",
+    "bioPlaceholder": "Kendinden kısaca bahset…",
+    "location": "Konum",
+    "locationPlaceholder": "İstanbul, TR",
+    "avatarUrl": "Avatar URL",
+    "password": "Şifre",
+    "passwordHelp": "Mevcut şifreni doğrulayıp yeni bir şifre belirle.",
+    "currentPassword": "Mevcut şifre",
+    "newPassword": "Yeni şifre",
+    "confirmPassword": "Yeni şifre (tekrar)",
+    "savePassword": "Şifreyi Güncelle",
+    "passwordSaved": "Şifre güncellendi",
+    "passwordMismatch": "Yeni şifreler eşleşmiyor",
     "language": "Dil",
     "languageHelp": "Arayüz dili değişimi anında uygulanır ve hesabına kaydedilir.",
     "saving": "kaydediliyor…",
-    "saveError": "Tercih kaydedilemedi"
+    "saveError": "Kayıt başarısız",
+    "dangerZone": "Tehlikeli alan",
+    "deleteHelp": "Hesabını ve tüm verilerini kalıcı olarak siler. Bu işlem geri alınamaz.",
+    "deleteAccount": "Hesabımı sil",
+    "deleteConfirm": "Hesabını ve tüm verilerini kalıcı olarak silmek istediğine emin misin?"
   },
   "footer": {
     "tagline": "Sinemanın sosyal günlüğü"

@@ -222,6 +222,7 @@ export interface DiscoverParams {
   sortBy?:
   | 'popularity.desc'
   | 'vote_average.desc'
+  | 'vote_count.desc'
   | 'release_date.desc'
   | 'primary_release_date.desc';
 }

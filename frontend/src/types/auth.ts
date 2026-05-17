@@ -8,6 +8,7 @@ export interface AuthUser {
   displayName: string | null;
   bio: string | null;
   avatarUrl: string | null;
+  location: string | null;
   language: Language;
   role: Role;
   createdAt: string;

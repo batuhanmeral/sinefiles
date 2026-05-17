@@ -38,6 +38,7 @@ export interface PublicUser {
   displayName: string | null;
   avatarUrl: string | null;
   bio: string | null;
+  location: string | null;
   language: 'TR' | 'EN';
   role: 'USER' | 'ADMIN';
   createdAt: Date;
@@ -52,6 +53,7 @@ function toPublic(user: User): PublicUser {
     displayName: user.displayName,
     avatarUrl: user.avatarUrl,
     bio: user.bio,
+    location: user.location,
     language: user.language,
     role: user.role,
     createdAt: user.createdAt,
